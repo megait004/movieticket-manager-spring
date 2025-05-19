@@ -1,18 +1,4 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="vi">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Trang chủ</title>
-        <link rel="stylesheet" href="css/output.css" />
-        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    </head>
-    <body>
-        <h1 class="text-red-500">Hệ thống đặt vé xem phim trực tuyến</h1>
-        <div class="card">
-            <h2>Chào mừng đến với hệ thống đặt vé xem phim</h2>
-            <p>Đây là trang chủ của ứng dụng.</p>
-            <a href="/users" class="btn">Danh sách người dùng</a>
-        </div>
-    </body>
-</html>
+<div th:replace="~{layouts/main :: layout(~{::title}, ~{::section})}">
+    <title>Trang chủ - CinemaTicket</title>
+    <section class="flex-grow"></section>
+</div>
