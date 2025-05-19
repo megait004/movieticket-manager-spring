@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTMX Demo</title>
+    <script src="https://unpkg.com/htmx.org@2.0.4" ></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #4CAF50;
+        }
+        .indicator {
+            display: none;
+            margin-left: 10px;
+        }
+        .htmx-request .indicator {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTMX Demo với Spring Boot và Thymeleaf</h1>
+
+    <div class="card">
+        <h2>Thời gian hiện tại trên máy chủ</h2>
+        <p th:text="${serverTime}">12:00:00</p>
+
+        <button class="btn" hx-post="/htmx-demo/click" hx-target="#message-container" hx-swap="innerHTML">
+            Nhấn vào đây
+            <span class="indicator">⏳</span>
+        </button>
+
+        <div id="message-container" class="message"></div>
+    </div>
+
+    <div class="card">
+        <h2>Nhập tên của bạn</h2>
+        <input type="text" name="name" placeholder="Nhập tên của bạn"
+               hx-get="/htmx-demo/greeting"
+               hx-target="#greeting-container"
+               hx-trigger="keyup changed delay:500ms">
+
+        <div id="greeting-container" class="message">
+            <!-- Nội dung sẽ được cập nhật bởi HTMX -->
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Về HTMX</h2>
+        <p>HTMX cho phép bạn truy cập các tính năng AJAX, CSS Transitions, WebSockets và Server Sent Events trực tiếp trong HTML, sử dụng các thuộc tính, vì vậy bạn có thể xây dựng giao diện người dùng hiện đại với sự đơn giản và sức mạnh của hypertext.</p>
+        <p>HTMX nhỏ gọn (~14k min.gz'd), không phụ thuộc và có thể mở rộng.</p>
+    </div>
+</body>
+</html>
