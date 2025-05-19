@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS
         uid INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE,
+        email TEXT UNIQUE,
         role TEXT NOT NULL DEFAULT 'user',
         active INTEGER NOT NULL DEFAULT 0,
         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -49,3 +49,7 @@ CREATE TABLE IF NOT EXISTS
         FOREIGN KEY (screening_id) REFERENCES SCREENINGS (id),
         UNIQUE (screening_id, seat_number)
     );
+
+INSERT INTO USERS (username, password, email, role, active)
+SELECT 'admin', 'admin123', '', 'admin', 1
+WHERE NOT EXISTS (SELECT 1 FROM USERS WHERE role = 'admin');

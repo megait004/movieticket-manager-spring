@@ -1,47 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang chủ</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .btn {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Hệ thống đặt vé xem phim trực tuyến</h1>
-
-    <div class="card">
-        <h2>Chào mừng đến với hệ thống đặt vé xem phim</h2>
-        <p>Đây là trang chủ của ứng dụng.</p>
-
-        <a href="/htmx-demo" class="btn">Xem Demo HTMX</a>
-        <a href="/users" class="btn">Danh sách người dùng</a>
-    </div>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Trang chủ</title>
+        <link rel="stylesheet" href="css/output.css" />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    </head>
+    <body>
+        <h1 class="text-red-500">Hệ thống đặt vé xem phim trực tuyến</h1>
+        <div class="card">
+            <h2>Chào mừng đến với hệ thống đặt vé xem phim</h2>
+            <p>Đây là trang chủ của ứng dụng.</p>
+            <a href="/users" class="btn">Danh sách người dùng</a>
+        </div>
+    </body>
 </html>
