@@ -1,13 +1,10 @@
 <header th:fragment="header" class="bg-gradient-to-r from-blue-800 to-indigo-900 shadow-lg">
     <div class="container mx-auto px-4 py-3">
         <div class="flex items-center justify-between">
-            <!-- Logo và tên -->
             <div class="flex items-center space-x-2">
                 <i class="fa fa-film text-yellow-400 text-2xl"></i>
                 <span class="text-xl font-bold text-white">CinemaTicket</span>
             </div>
-
-            <!-- Menu chính -->
             <nav class="hidden md:flex space-x-8">
                 <a href="/"
                    hx-get="/"
@@ -51,7 +48,6 @@
                 </a>
             </nav>
 
-            <!-- Nút đăng nhập và đăng ký -->
             <div class="flex items-center space-x-4">
                 <a href="/login"
                    hx-get="/login"
@@ -70,8 +66,6 @@
                     <i class="fa fa-user-plus mr-1"></i> Đăng ký
                 </a>
             </div>
-
-            <!-- Menu mobile -->
             <div class="md:hidden">
                 <button class="text-white focus:outline-none">
                     <i class="fa fa-bars text-xl"></i>
