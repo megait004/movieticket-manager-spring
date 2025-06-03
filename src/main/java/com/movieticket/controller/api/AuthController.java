@@ -1,16 +1,20 @@
 package com.movieticket.controller.api;
 
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.util.Map;
 
 @Controller
 public class AuthController {
@@ -50,23 +54,25 @@ public class AuthController {
                 roleCookie.setMaxAge(86400);
                 roleCookie.setPath("/");
                 response.addCookie(roleCookie);
-                // TODO: change path from this line
-                response.setHeader("HX-Redirect", "/");
 
-                return "";
+                String redirectPath = role.equals("admin") ? "/dashboard" : "/profile";
+                response.setHeader("HX-Redirect", redirectPath);
+
+                model.addAttribute("message", "Đăng nhập thành công");
+                return "components/ok-div :: ok";
             } else {
                 model.addAttribute("message", "Tên đăng nhập hoặc mật khẩu không đúng");
                 return "components/error-div :: error";
             }
 
-        } catch (Exception e) {
+        } catch (DataAccessException e) {
             model.addAttribute("message", "Lỗi hệ thống: " + e.getMessage());
             return "components/error-div :: error";
         }
     }
 
-    @PostMapping(value = "/api/logout", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String logout(HttpServletResponse response) {
+    @GetMapping(value = "/api/logout")
+    public String logout(HttpServletResponse response, Model model) {
         Cookie userCookie = new Cookie("user_id", "");
         userCookie.setMaxAge(0);
         userCookie.setPath("/");
@@ -77,6 +83,55 @@ public class AuthController {
         response.addCookie(roleCookie);
         response.setHeader("HX-Redirect", "/login");
 
-        return "";
+        model.addAttribute("message", "Đăng xuất thành công");
+        return "components/ok-div :: ok";
+    }
+
+    @PostMapping(value = "/api/register", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public String register(@RequestBody Map<String, String> registration, Model model, HttpServletResponse response) {
+        String email = registration.get("email");
+        String username = registration.get("username");
+        String password = registration.get("password");
+
+        if (!StringUtils.hasText(email) || !isValidEmail(email)) {
+            model.addAttribute("message", "Email không hợp lệ");
+            return "components/error-div :: error";
+        }
+
+        if (!StringUtils.hasText(username) || username.length() < 3) {
+            model.addAttribute("message", "Tên đăng nhập phải có ít nhất 3 ký tự");
+            return "components/error-div :: error";
+        }
+
+        if (!StringUtils.hasText(password) || password.length() < 6) {
+            model.addAttribute("message", "Mật khẩu phải có ít nhất 6 ký tự");
+            return "components/error-div :: error";
+        }
+
+        try {
+            String checkSql = "SELECT COUNT(*) FROM USERS WHERE username = ? OR email = ?";
+            int count = jdbcTemplate.queryForObject(checkSql, Integer.class, username, email);
+
+            if (count > 0) {
+                model.addAttribute("message", "Tên đăng nhập hoặc email đã tồn tại");
+                return "components/error-div :: error";
+            }
+
+            String insertSql = "INSERT INTO USERS (username, password, email, role, active) VALUES (?, ?, ?, 'user', 0)";
+            jdbcTemplate.update(insertSql, username, password, email);
+
+            response.setHeader("HX-Redirect", "/login");
+            model.addAttribute("message", "Đăng ký thành công");
+            return "components/ok-div :: ok";
+        } catch (DataAccessException e) {
+            model.addAttribute("message", "Lỗi đăng ký: " + e.getMessage());
+            return "components/error-div :: error";
+        }
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
     }
 }

@@ -1,76 +1,114 @@
-<header th:fragment="header" class="bg-gradient-to-r from-blue-800 to-indigo-900 shadow-lg">
-    <div class="container mx-auto px-4 py-3">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-                <i class="fa fa-film text-yellow-400 text-2xl"></i>
-                <span class="text-xl font-bold text-white">CinemaTicket</span>
-            </div>
-            <nav class="hidden md:flex space-x-8">
-                <a href="/"
-                   hx-get="/"
-                   hx-target="#content"
-                   hx-push-url="true"
-                   hx-swap="innerHTML transition:true"
-                   class="text-white hover:text-yellow-300 transition-colors font-medium">
-                    <i class="fa fa-home mr-1"></i> Trang chủ
-                </a>
-                <a href="/movies"
-                   hx-get="/movies"
-                   hx-target="#content"
-                   hx-push-url="true"
-                   hx-swap="innerHTML transition:true"
-                   class="text-white hover:text-yellow-300 transition-colors font-medium">
-                    <i class="fa fa-video-camera mr-1"></i> Phim
-                </a>
-                <a href="/showtimes"
-                   hx-get="/showtimes"
-                   hx-target="#content"
-                   hx-push-url="true"
-                   hx-swap="innerHTML transition:true"
-                   class="text-white hover:text-yellow-300 transition-colors font-medium">
-                    <i class="fa fa-calendar mr-1"></i> Lịch chiếu
-                </a>
-                <a href="/promotions"
-                   hx-get="/promotions"
-                   hx-target="#content"
-                   hx-push-url="true"
-                   hx-swap="innerHTML transition:true"
-                   class="text-white hover:text-yellow-300 transition-colors font-medium">
-                    <i class="fa fa-ticket mr-1"></i> Khuyến mãi
-                </a>
-                <a href="/about"
-                   hx-get="/about"
-                   hx-target="#content"
-                   hx-push-url="true"
-                   hx-swap="innerHTML transition:true"
-                   class="text-white hover:text-yellow-300 transition-colors font-medium">
-                    <i class="fa fa-info-circle mr-1"></i> Giới thiệu
-                </a>
-            </nav>
+<header
+  th:fragment="header"
+  class="bg-gradient-to-r from-blue-800 to-indigo-900 shadow-lg"
+>
+  <div class="container mx-auto px-4 py-3">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <i class="fa fa-film text-2xl text-yellow-400"></i>
+        <span class="text-xl font-bold text-white">CinemaTicket</span>
+      </div>
+      <nav class="hidden space-x-8 md:flex">
+        <a
+          href="/"
+          hx-get="/"
+          hx-target="#content"
+          hx-push-url="true"
+          hx-swap="innerHTML transition:true"
+          class="font-medium text-white transition-colors hover:text-yellow-300"
+        >
+          <i class="fa fa-home mr-1"></i> Trang chủ
+        </a>
+        <a
+          href="/movies"
+          hx-get="/movies"
+          hx-target="#content"
+          hx-push-url="true"
+          hx-swap="innerHTML transition:true"
+          class="font-medium text-white transition-colors hover:text-yellow-300"
+        >
+          <i class="fa fa-video-camera mr-1"></i> Phim
+        </a>
+        <a
+          href="/showtimes"
+          hx-get="/showtimes"
+          hx-target="#content"
+          hx-push-url="true"
+          hx-swap="innerHTML transition:true"
+          class="font-medium text-white transition-colors hover:text-yellow-300"
+        >
+          <i class="fa fa-calendar mr-1"></i> Lịch chiếu
+        </a>
+        <a
+          href="/promotions"
+          hx-get="/promotions"
+          hx-target="#content"
+          hx-push-url="true"
+          hx-swap="innerHTML transition:true"
+          class="font-medium text-white transition-colors hover:text-yellow-300"
+        >
+          <i class="fa fa-ticket mr-1"></i> Khuyến mãi
+        </a>
+        <a
+          href="/about"
+          hx-get="/about"
+          hx-target="#content"
+          hx-push-url="true"
+          hx-swap="innerHTML transition:true"
+          class="font-medium text-white transition-colors hover:text-yellow-300"
+        >
+          <i class="fa fa-info-circle mr-1"></i> Giới thiệu
+        </a>
+      </nav>
 
-            <div class="flex items-center space-x-4">
-                <a href="/login"
-                   hx-get="/login"
-                   hx-target="#content"
-                   hx-push-url="true"
-                   hx-swap="innerHTML transition:true"
-                   class="text-white hover:text-yellow-300 transition-colors font-medium">
-                    <i class="fa fa-sign-in mr-1"></i> Đăng nhập
-                </a>
-                <a href="/register"
-                   hx-get="/register"
-                   hx-target="#content"
-                   hx-push-url="true"
-                   hx-swap="innerHTML transition:true"
-                   class="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-2 px-4 rounded-lg transition-colors">
-                    <i class="fa fa-user-plus mr-1"></i> Đăng ký
-                </a>
-            </div>
-            <div class="md:hidden">
-                <button class="text-white focus:outline-none">
-                    <i class="fa fa-bars text-xl"></i>
-                </button>
-            </div>
+      <div class="flex items-center space-x-4">
+        <div th:unless="${isAuthenticated}" class="flex items-center space-x-4">
+          <a
+            href="/login"
+            hx-get="/login"
+            hx-target="#content"
+            hx-push-url="true"
+            hx-swap="innerHTML transition:true"
+            class="font-medium text-white transition-colors hover:text-yellow-300"
+          >
+            <i class="fa fa-sign-in mr-1"></i> Đăng nhập
+          </a>
+          <a
+            href="/register"
+            hx-get="/register"
+            hx-target="#content"
+            hx-push-url="true"
+            hx-swap="innerHTML transition:true"
+            class="rounded-lg bg-yellow-500 px-4 py-2 font-bold text-blue-900 transition-colors hover:bg-yellow-600"
+          >
+            <i class="fa fa-user-plus mr-1"></i> Đăng ký
+          </a>
         </div>
+        <div th:if="${isAuthenticated}" class="flex items-center space-x-4">
+          <a
+            href="/profile"
+            hx-get="/profile"
+            hx-target="#content"
+            hx-push-url="true"
+            hx-swap="innerHTML transition:true"
+            class="font-medium text-white transition-colors hover:text-yellow-300"
+          >
+            <i class="fa fa-user mr-1"></i> Hồ sơ
+          </a>
+          <button
+            hx-get="/api/logout"
+            hx-target="#content"
+            class="cursor-pointer font-medium text-white transition-colors hover:text-yellow-300"
+          >
+            <i class="fa fa-sign-out mr-1"></i> Đăng xuất
+          </button>
+        </div>
+      </div>
+      <div class="md:hidden">
+        <button class="text-white focus:outline-none">
+          <i class="fa fa-bars text-xl"></i>
+        </button>
+      </div>
     </div>
+  </div>
 </header>

@@ -1,3 +1,7 @@
-<div th:fragment="error(message)" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
-    <span id="error-message" th:text="${message}"></span>
+<div
+  th:fragment="error(message)"
+  class="mb-4 rounded border border-red-400 bg-red-100 px-4 py-3 text-red-700"
+  role="alert"
+>
+  <span id="error-message" th:text="${message}"></span>
 </div>
