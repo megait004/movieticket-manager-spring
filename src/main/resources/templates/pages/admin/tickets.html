@@ -1,0 +1,99 @@
+<div th:replace="~{layouts/main :: layout(~{::title}, ~{::section})}">
+  <title>Ticket Management</title>
+  <section class="flex-grow p-6">
+    <div class="container mx-auto">
+      <h1 class="mb-6 text-2xl font-bold">Ticket Management</h1>
+
+      <div class="overflow-hidden rounded-lg bg-white shadow-md">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                ID
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                User
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Movie
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Room
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Seat
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Price
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Screening Time
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+              >
+                Booking Time
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <tr th:each="ticket : ${tickets}">
+              <td
+                class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                th:text="${ticket.id}"
+              ></td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div
+                  class="text-sm text-gray-900"
+                  th:text="${ticket.username}"
+                ></div>
+                <div
+                  class="text-sm text-gray-500"
+                  th:text="${ticket.fullname}"
+                ></div>
+              </td>
+              <td
+                class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                th:text="${ticket.movie_title}"
+              ></td>
+              <td
+                class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                th:text="${ticket.room_number}"
+              ></td>
+              <td
+                class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                th:text="${ticket.seat_number}"
+              ></td>
+              <td
+                class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                th:text="${ticket.price}"
+              ></td>
+              <td
+                class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                th:text="${ticket.screening_time}"
+              ></td>
+              <td
+                class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                th:text="${ticket.booking_time}"
+              ></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>

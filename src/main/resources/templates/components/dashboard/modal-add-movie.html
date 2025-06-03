@@ -1,0 +1,215 @@
+<div th:fragment="modal" class="modal modal-open">
+  <div
+    class="modal-box max-w-4xl rounded-lg bg-white shadow-xl"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+  >
+    <div class="mb-6">
+      <h3 class="text-center text-2xl font-bold text-gray-800">
+        Add New Movie
+      </h3>
+      <p class="mt-2 text-center text-gray-600">Enter movie details below</p>
+    </div>
+    <form
+      hx-post="/api/movies"
+      hx-target="#movies-container"
+      hx-swap="innerHTML"
+    >
+      <div class="grid grid-cols-2 gap-4">
+        <div class="form-control">
+          <label
+            for="movie-title"
+            class="mb-1 block text-sm font-medium text-gray-700"
+            >Title</label
+          >
+          <input
+            type="text"
+            name="title"
+            id="movie-title"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            required
+          />
+        </div>
+
+        <div class="form-control">
+          <label
+            for="movie-director"
+            class="mb-1 block text-sm font-medium text-gray-700"
+            >Director</label
+          >
+          <input
+            type="text"
+            name="director"
+            id="movie-director"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            required
+          />
+        </div>
+
+        <div class="form-control">
+          <label
+            for="movie-type"
+            class="mb-1 block text-sm font-medium text-gray-700"
+            >Movie Type</label
+          >
+          <select
+            name="movie_type"
+            id="movie-type"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            required
+          >
+            <option value="2D">2D</option>
+            <option value="3D">3D</option>
+            <option value="IMAX">IMAX</option>
+          </select>
+        </div>
+
+        <div class="form-control">
+          <label
+            for="movie-language"
+            class="mb-1 block text-sm font-medium text-gray-700"
+            >Language</label
+          >
+          <input
+            type="text"
+            name="language"
+            id="movie-language"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            required
+          />
+        </div>
+
+        <div class="form-control">
+          <label
+            for="movie-duration"
+            class="mb-1 block text-sm font-medium text-gray-700"
+            >Duration (minutes)</label
+          >
+          <input
+            type="number"
+            name="duration"
+            id="movie-duration"
+            min="1"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            required
+          />
+        </div>
+
+        <div class="form-control">
+          <label
+            for="movie-release-date"
+            class="mb-1 block text-sm font-medium text-gray-700"
+            >Release Date</label
+          >
+          <input
+            type="date"
+            name="release_date"
+            id="movie-release-date"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            required
+          />
+        </div>
+
+        <div class="form-control">
+          <label
+            for="movie-status"
+            class="mb-1 block text-sm font-medium text-gray-700"
+            >Status</label
+          >
+          <select
+            name="status"
+            id="movie-status"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            required
+          >
+            <option value="COMING_SOON">Coming Soon</option>
+            <option value="NOW_SHOWING">Now Showing</option>
+            <option value="END_SHOWING">End Showing</option>
+          </select>
+        </div>
+
+        <div class="form-control">
+          <label
+            for="movie-poster-url"
+            class="mb-1 block text-sm font-medium text-gray-700"
+            >Poster URL</label
+          >
+          <input
+            type="url"
+            name="poster_url"
+            id="movie-poster-url"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
+
+        <div class="form-control col-span-2">
+          <label
+            for="movie-cast"
+            class="mb-1 block text-sm font-medium text-gray-700"
+            >Cast</label
+          >
+          <input
+            type="text"
+            name="movie_cast"
+            id="movie-cast"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
+
+        <div class="form-control col-span-2">
+          <label
+            for="movie-trailer-url"
+            class="mb-1 block text-sm font-medium text-gray-700"
+            >Trailer URL</label
+          >
+          <input
+            type="url"
+            name="trailer_url"
+            id="movie-trailer-url"
+            class="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
+
+        <div class="form-control col-span-2">
+          <label
+            for="movie-description"
+            class="mb-1 block text-sm font-medium text-gray-700"
+            >Description</label
+          >
+          <textarea
+            name="description"
+            id="movie-description"
+            class="h-24 w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end gap-3 border-t pt-4">
+        <button
+          type="button"
+          class="rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-700 hover:bg-gray-50"
+          hx-get=""
+          hx-trigger="click"
+          hx-target="#modal-container"
+          hx-swap="innerHTML"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+        >
+          Add Movie
+        </button>
+      </div>
+    </form>
+  </div>
+  <div
+    class="modal-backdrop bg-opacity-50 bg-black"
+    hx-get=""
+    hx-trigger="click"
+    hx-target="#modal-container"
+    hx-swap="innerHTML"
+  ></div>
+</div>

@@ -40,16 +40,6 @@
           <i class="fa fa-calendar mr-1"></i> Lịch chiếu
         </a>
         <a
-          href="/promotions"
-          hx-get="/promotions"
-          hx-target="#content"
-          hx-push-url="true"
-          hx-swap="innerHTML transition:true"
-          class="font-medium text-white transition-colors hover:text-yellow-300"
-        >
-          <i class="fa fa-ticket mr-1"></i> Khuyến mãi
-        </a>
-        <a
           href="/about"
           hx-get="/about"
           hx-target="#content"
@@ -86,14 +76,19 @@
         </div>
         <div th:if="${isAuthenticated}" class="flex items-center space-x-4">
           <a
-            href="/profile"
-            hx-get="/profile"
+            th:href="${user?.role == 'admin' ? '/dashboard' : '/profile'}"
+            th:hx-get="${user?.role == 'admin' ? '/dashboard' : '/profile'}"
             hx-target="#content"
             hx-push-url="true"
             hx-swap="innerHTML transition:true"
             class="font-medium text-white transition-colors hover:text-yellow-300"
           >
-            <i class="fa fa-user mr-1"></i> Hồ sơ
+            <i
+              th:class="${user?.role == 'admin' ? 'fa fa-dashboard' : 'fa fa-user'} + ' mr-1'"
+            ></i>
+            <span th:text="${user?.role == 'admin' ? 'Dashboard' : 'Hồ sơ'}"
+              >Hồ sơ</span
+            >
           </a>
           <button
             hx-get="/api/logout"

@@ -1,0 +1,116 @@
+<div th:replace="~{layouts/main :: layout(~{::title}, ~{::section})}">
+  <title>Movie Management</title>
+  <section class="flex-grow p-6" hx-history="false">
+    <div class="w-full">
+      <div class="mb-6 flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-gray-800">Movie Management</h1>
+        <button
+          class="btn flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          hx-get="/admin/movies/add"
+          hx-target="#modal-container"
+        >
+          <i class="fa fa-plus"></i>
+          Add Movie
+        </button>
+      </div>
+
+      <div class="rounded-lg bg-white shadow">
+        <div class="overflow-x-auto">
+          <table id="movies-table" class="w-full">
+            <thead class="border-b bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                >
+                  Title
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                >
+                  Director
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                >
+                  Type
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                >
+                  Duration
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                >
+                  Release Date
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr th:each="movie : ${movies}" class="hover:bg-gray-50">
+                <td
+                  class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                  th:text="${movie.title}"
+                ></td>
+                <td
+                  class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                  th:text="${movie.director}"
+                ></td>
+                <td
+                  class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                  th:text="${movie.movie_type}"
+                ></td>
+                <td
+                  class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                  th:text="${movie.duration + ' mins'}"
+                ></td>
+                <td
+                  class="px-6 py-4 text-sm whitespace-nowrap text-gray-900"
+                  th:text="${movie.formatted_release_date}"
+                ></td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="rounded-full px-2 py-1 text-xs"
+                    th:classappend="${movie.status == 'NOW_SHOWING' ? 'bg-green-100 text-green-800' :
+                                     movie.status == 'COMING_SOON' ? 'bg-blue-100 text-blue-800' :
+                                     'bg-gray-100 text-gray-800'}"
+                    th:text="${movie.status}"
+                  ></span>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium whitespace-nowrap">
+                  <button
+                    class="mr-2 rounded bg-gray-100 px-3 py-1 text-gray-700 hover:bg-gray-200"
+                    th:hx-get="@{'/admin/movies/edit/' + ${movie.id}}"
+                    hx-target="#modal-container"
+                  >
+                    <i class="fa fa-pencil"></i> Edit
+                  </button>
+                  <button
+                    class="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700"
+                    th:hx-delete="@{'/api/movies/' + ${movie.id}}"
+                    hx-confirm="Are you sure you want to delete this movie?"
+                    hx-target="closest tr"
+                    hx-swap="outerHTML"
+                  >
+                    <i class="fa fa-trash"></i> Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="modal-container" hx-swap-oob="true"></div>
+  </section>
+</div>

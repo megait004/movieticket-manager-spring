@@ -35,6 +35,12 @@ public class PageController implements ErrorController {
             }
         }
         model.addAttribute("isAuthenticated", userId != null);
+
+        if (userId != null) {
+            String roleQuery = "SELECT uid, role FROM USERS WHERE uid = ?";
+            var user = jdbcTemplate.queryForMap(roleQuery, userId);
+            model.addAttribute("user", user);
+        }
     }
 
     @GetMapping("/login")
@@ -98,6 +104,12 @@ public class PageController implements ErrorController {
 
         if (userId == null) {
             return "redirect:/login";
+        }
+
+        String roleQuery = "SELECT role FROM USERS WHERE uid = ?";
+        String userRole = jdbcTemplate.queryForObject(roleQuery, String.class, userId);
+        if ("admin".equals(userRole)) {
+            return "redirect:/dashboard";
         }
 
         String sql = "SELECT uid, username, email, fullname, "
@@ -219,6 +231,115 @@ public class PageController implements ErrorController {
             model.addAttribute("error", "User not found");
             return "components/error-div :: error";
         }
+    }
+
+    @GetMapping("/admin/tickets")
+    public String ticketManager(HttpServletRequest request, Model model) {
+        addAuthStatus(request, model);
+
+        if (!isAdmin(request)) {
+            return "redirect:/";
+        }
+
+        String sql = """
+            SELECT t.id, t.seat_number,
+                   u.username, u.fullname,
+                   m.title as movie_title,
+                   s.room_number, s.price,
+                   strftime('%d/%m/%Y %H:%M', s.start_time) as screening_time,
+                   strftime('%d/%m/%Y %H:%M', t.created_at) as booking_time
+            FROM TICKETS t
+            JOIN USERS u ON t.uid = u.uid
+            JOIN SCREENINGS s ON t.screening_id = s.id
+            JOIN MOVIES m ON s.movie_id = m.id
+            ORDER BY t.created_at DESC
+        """;
+
+        try {
+            var tickets = jdbcTemplate.queryForList(sql);
+            model.addAttribute("tickets", tickets);
+        } catch (DataAccessException e) {
+            model.addAttribute("error", "System error: " + e.getMessage());
+        }
+
+        if (isHtmxRequest(request)) {
+            return "pages/admin/tickets :: section";
+        }
+        return "pages/admin/tickets";
+    }
+
+    @GetMapping("/admin/screenings")
+    public String screeningManager(HttpServletRequest request, Model model) {
+        addAuthStatus(request, model);
+
+        if (!isAdmin(request)) {
+            return "redirect:/";
+        }
+
+        String sql = """
+            SELECT s.id, s.room_number, s.price, s.available_seats,
+                   m.title as movie_title, m.duration, m.movie_type,
+                   strftime('%d/%m/%Y %H:%M', s.start_time) as screening_time,
+                   strftime('%d/%m/%Y %H:%M', datetime(s.start_time, '+' || m.duration || ' minutes')) as end_time
+            FROM SCREENINGS s
+            JOIN MOVIES m ON s.movie_id = m.id
+            ORDER BY s.start_time ASC
+        """;
+
+        try {
+            var screenings = jdbcTemplate.queryForList(sql);
+            model.addAttribute("screenings", screenings);
+
+            // Get movies for the add screening form
+            String moviesSql = "SELECT id, title FROM MOVIES WHERE status = 'NOW_SHOWING' ORDER BY title";
+            var movies = jdbcTemplate.queryForList(moviesSql);
+            model.addAttribute("movies", movies);
+        } catch (DataAccessException e) {
+            model.addAttribute("error", "System error: " + e.getMessage());
+        }
+
+        if (isHtmxRequest(request)) {
+            return "pages/admin/screenings :: section";
+        }
+        return "pages/admin/screenings";
+    }
+
+    @GetMapping("/admin/movies")
+    public String movieManager(HttpServletRequest request, Model model) {
+        addAuthStatus(request, model);
+
+        if (!isAdmin(request)) {
+            return "redirect:/";
+        }
+
+        String sql = """
+            SELECT id, title, description, director, movie_cast, duration,
+                   movie_type, language, rating, trailer_url, poster_url,
+                   strftime('%d/%m/%Y', release_date) as formatted_release_date,
+                   status
+            FROM MOVIES
+            ORDER BY release_date DESC
+        """;
+
+        try {
+            var movies = jdbcTemplate.queryForList(sql);
+            model.addAttribute("movies", movies);
+        } catch (DataAccessException e) {
+            model.addAttribute("error", "System error: " + e.getMessage());
+        }
+
+        if (isHtmxRequest(request)) {
+            return "pages/admin/movies :: section";
+        }
+        return "pages/admin/movies";
+    }
+
+    @GetMapping("/admin/movies/add")
+    public String addMovie(HttpServletRequest request, Model model) {
+        if (!isAdmin(request)) {
+            return "redirect:/";
+        }
+        return "components/dashboard/modal-add-movie :: modal";
     }
 
     private boolean isHtmxRequest(HttpServletRequest request) {
